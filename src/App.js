@@ -1,11 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
-import Todos from './components/Todos';
+
+import Hooks from './hooks/Hooks';
+import Fundamentals from './fundamentals/Fundamentals';
 
 function App() {
   return (
     <div className="App">
-      <Todos />
+      {/* <Fundamentals /> */}
+      <Hooks />
     </div>
   );
 }
