@@ -9,7 +9,7 @@ function Hooks() {
   useEffect(() => {
     const isLoggedInStorage = window.localStorage.getItem('isLoggedIn');
 
-    setIsLoggedIn(isLoggedInStorage);
+    setIsLoggedIn(isLoggedInStorage === 'true');
   }, [])
 
   const handleLogOut = () => {
@@ -34,9 +34,7 @@ function Hooks() {
 
   return (
     <div className="Hooks">
-
       {isLoggedIn ? renderWelcome() : <SignIn handleLogin={handleLogin} />}
-
     </div>
   );
 }

@@ -8,7 +8,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const theme = createTheme();
 
@@ -16,9 +16,32 @@ export default function SignIn(props) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
+
+    const validateForm = (email, password) => {
+        return validateEmail(email) && validatePassword(password);
+    }
+
+    useEffect(() => {
+        if (email && password) {
+            const isFormValid = validateForm(email, password);
+            console.log('isFormValid: ', isFormValid);
+        }
+
+    }, [email, password, validateForm]);
+
     const handleSubmit = () => {
         props.handleLogin({ email, password });
     };
+
+    const validateEmail = (email) => {
+        return email.indexOf('@') !== -1 && email.indexOf('.') !== -1;
+    }
+
+    const validatePassword = (password) => {
+        return password.length > 6;
+    }
+
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -49,6 +72,8 @@ export default function SignIn(props) {
                             autoComplete="email"
                             autoFocus
                             onChange={(e) => setEmail(e.target.value)}
+                            error={(email && !validateEmail(email)) ? true : false}
+                            helperText={email && !validateEmail(email) && 'Please enter a valid email!'}
                         />
                         <TextField
                             margin="normal"
@@ -60,6 +85,8 @@ export default function SignIn(props) {
                             id="password"
                             autoComplete="current-password"
                             onChange={(e) => setPassword(e.target.value)}
+                            error={(password && !validatePassword(password)) ? true : false}
+                            helperText={password && !validatePassword(password) && 'Password field can not be lesser then 6 characters!'}
                         />
                         <Button
                             type="button"
