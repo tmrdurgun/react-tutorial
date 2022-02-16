@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import SignIn from './components/SignIn';
 
@@ -18,7 +19,7 @@ function Hooks() {
   }
 
   const handleLogin = (params) => {
-    if (params.email === 'test@test.com' && params.password === '123') {
+    if (params.email === 'tamer.durgun@mdpgroup.com' && params.password === '123123') {
       window.localStorage.setItem('isLoggedIn', true);
       setIsLoggedIn(true);
     }
@@ -28,6 +29,8 @@ function Hooks() {
     return (
       <div id="welcome">
         <h3>Welcome to the jungle!! <button onClick={handleLogOut}>Log out</button></h3>
+
+        <Link to="/hooks/todos">Check out your TO-DO list</Link>
       </div>
     )
   }
