@@ -1,43 +1,59 @@
-import { useState } from 'react';
+import { useState, useReducer } from 'react';
+
+const initialTodos = [
+  {
+    "userId": 1,
+    "id": 1,
+    "title": "delectus aut autem",
+    "completed": false
+  },
+  {
+    "userId": 1,
+    "id": 2,
+    "title": "quis ut nam facilis et officia qui",
+    "completed": true
+  },
+  {
+    "userId": 1,
+    "id": 3,
+    "title": "fugiat veniam minus",
+    "completed": false
+  },
+];
+
+const todoReducer = (state, action) => {
+  switch (action.type) {
+    case 'CHECK_TODO':
+      return state.map((item) => {
+        if (item.id === action.id) {
+          return { ...item, completed: !item.completed };
+        }
+        return item;
+
+      });
+    case 'ADD_TODO':
+      return [...state, {
+        "userId": 1,
+        "id": state.length + 1,
+        "title": action.newTodo,
+        "completed": false
+      }]
+    default:
+      return state;
+  }
+}
 
 const Todos = () => {
   const [newTodo, setNewTodo] = useState('');
+  const [todos, dispatch] = useReducer(todoReducer, initialTodos);
 
-  const [todos, setTodos] = useState([
-    {
-      "userId": 1,
-      "id": 1,
-      "title": "delectus aut autem",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": 2,
-      "title": "quis ut nam facilis et officia qui",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": 3,
-      "title": "fugiat veniam minus",
-      "completed": false
-    },
-  ]);
+  const handleAddTodo = () => dispatch({ type: 'ADD_TODO', newTodo });
 
   const handleCheckTodo = (todoItem) => {
-    setTodos(todos.map((item, i) => {
-      if (item.id === todoItem.id) item.completed = !item.completed;
-      return item;
-    }))
-  }
-
-  const handleAddTodo = () => {
-    setTodos([...todos, {
-      "userId": 1,
-      "id": todos.length + 1,
-      "title": newTodo,
-      "completed": false
-    }])
+    dispatch({
+      type: 'CHECK_TODO',
+      id: todoItem.id
+    })
   }
 
   return (
@@ -56,7 +72,6 @@ const Todos = () => {
               {todoItem.title}
 
               <input type="checkbox" name="" id={`todo-cb-${i + 1}`}
-                value={todoItem.completed}
                 checked={todoItem.completed}
                 onChange={() => handleCheckTodo(todoItem)}
               />
