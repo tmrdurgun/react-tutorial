@@ -21,10 +21,10 @@ const initialTodos = [
   },
 ];
 
-const todoReducer = (state, action) => {
+const todoReducer = (todos, action) => {
   switch (action.type) {
     case 'CHECK_TODO':
-      return state.map((item) => {
+      return todos.map((item) => {
         if (item.id === action.id) {
           return { ...item, completed: !item.completed };
         }
@@ -32,14 +32,14 @@ const todoReducer = (state, action) => {
 
       });
     case 'ADD_TODO':
-      return [...state, {
+      return [...todos, {
         "userId": 1,
-        "id": state.length + 1,
+        "id": todos.length + 1,
         "title": action.newTodo,
         "completed": false
       }]
     default:
-      return state;
+      return todos;
   }
 }
 
